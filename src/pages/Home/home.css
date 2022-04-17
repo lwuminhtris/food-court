@@ -1,0 +1,84 @@
+
+.menu {
+    font-size: 20px;
+    background: red;
+}
+
+.menu .logo {
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 0px;
+}
+
+.menu .login {
+    color: blue;
+    text-align: end;
+    padding-right: 20px;
+    padding-top: 18.5px;
+}
+
+.cover {
+    height: 500px;
+    width: 100%;
+}
+
+.cover .first {
+    background-image: url(https://cdn.discordapp.com/attachments/835921395292700776/964924382935920700/271687.jpg);
+    height: 500px;
+    width: auto;
+    background-repeat: no-repeat;
+}
+
+.cover .second {
+    background-image: url(https://cdn.discordapp.com/attachments/835921395292700776/964924383166599198/1324858.jpg);
+    height: 500px;
+    width: auto;
+    background-repeat: no-repeat;
+}
+
+.cover .third {
+    background-image: url(https://cdn.discordapp.com/attachments/835921395292700776/964924383518924860/1324862.jpg);
+    height: 500px;
+    width: auto;
+    background-repeat: no-repeat;
+}
+
+.reservation {
+    padding-left: 20px;
+    position: absolute;
+    top: 30%;
+    -webkit-text-stroke: 0.2px white;
+}
+
+.reservation h1 {
+    font-family: monospace;
+    font-size: 32px;
+}
+
+.reservation h3 {
+    font-size: 24px;
+    margin-top: -25px;
+    font-family: monospace;
+}
+
+.menu-caption {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.food-card-outside {
+    width: 100%;
+    text-align: center;
+}
+
+.food-card-inside {
+    display: inline-block;
+}
+
+.logged-in-toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    flex-wrap: nowrap;
+}
