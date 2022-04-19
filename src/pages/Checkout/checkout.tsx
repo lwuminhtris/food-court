@@ -12,8 +12,8 @@ import {
     Grid,
     CardActions,
 } from "@mui/material";
-import React from "react";
-import { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "./checkout.css";
 
@@ -106,6 +106,8 @@ const CheckOut = () => {
         (state) => state.cartReducer.foodList
     );
 
+    const username = useSelector<any, any>((state) => state.loginReducer.userList.username);
+
     const [hamburger, setHamburger] = useState(0);
     const [pizza, setPizza] = useState(0);
     const [pasta, setPasta] = useState(0);
@@ -114,19 +116,15 @@ const CheckOut = () => {
     const getNumbersFromChild = (foodName: string, data: number) => {
         if (foodName === "Burger") {
             setHamburger(data);
-            console.log("Ham " + hamburger);
         }
         if (foodName === "Pizza") {
             setPizza(data);
-            console.log("Pizza " + pizza);
         }
         if (foodName === "Pasta") {
             setPasta(data);
-            console.log("Pasta " + pasta);
         }
         if (foodName === "Paella") {
             setPaella(data);
-            console.log("Paella " + paella);
         }
     };
 
@@ -136,6 +134,29 @@ const CheckOut = () => {
             <FoodExpense passChildData={getNumbersFromChild} foodName={item} />
         </ListItem>
     ));
+
+    const saveOrder = () => {
+        axios.post(
+            "http://localhost:5000/orders",
+            {
+                username: username,
+                date: new Date(),
+                burger: hamburger / 30000,
+                pizza: pizza / 45000,
+                pasta: pasta / 35000,
+                paella: paella / 60000,
+                totalPrice: hamburger + pizza + pasta + paella
+            }
+        ).then((res) => {
+            if (res.data.response === true) {
+                window.alert("Thanh toán thành công")
+            } else {
+                window.alert("Thanh toán không thành công")
+            }
+        }).catch((e) => {
+            console.log('Error: ', e)
+        })
+    };
 
     return (
         <>
@@ -180,7 +201,12 @@ const CheckOut = () => {
                             </List>
                         </CardContent>
                         <CardActions>
-                            <Button variant="contained" fullWidth={true} style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
+                            <Button
+                                variant="contained"
+                                fullWidth={true}
+                                style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}
+                                onClick={saveOrder}
+                            >
                                 THANH TOÁN
                             </Button>
                         </CardActions>

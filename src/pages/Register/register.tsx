@@ -1,9 +1,31 @@
 import { Form, Input, Button, Row, Col } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-    const registerAccount = (values: any) => {
-        console.log('New registered account is', values);
+
+    const navigate = useNavigate();
+
+    const registerAccount = async (values: any) => {
+        if (values.password !== values.repassword) {
+            window.alert("Mật khẩu không khớp");
+        } else {
+            await axios.post(
+                "http://localhost:5000/register?username=" +
+                values.username +
+                "&password=" +
+                values.password,
+                {}
+            ).then((res) => {
+                if (res.data.response === true) {
+                    window.alert("Đăng ký thành công!")
+                    navigate('/login');
+                } else {
+                    window.alert("Tên đăng nhập đã tồn tại, hãy chọn tên khác!")
+                }
+            })
+        }
     };
 
     return (
@@ -14,7 +36,7 @@ const Register = () => {
                     name="normal_login"
                     className="login-form"
                     initialValues={{ remember: true }}
-                    onFinish={registerAccount}
+                    onFinish={(values) => registerAccount(values)}
                 >
                     <Form.Item
                         name="username"

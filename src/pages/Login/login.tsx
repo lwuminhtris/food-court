@@ -1,33 +1,42 @@
-import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import ALogin from '../../actions/loginAction';
+import { Form, Input, Button, Checkbox, Row, Col } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import ALogin from "../../actions/loginAction";
+import axios from "axios";
 
 interface IAccount {
-    username: string,
-    password: string
+    username: string;
+    password: string;
 }
 
 const Login = () => {
-
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
-    const truth: IAccount = {
-        username: "minhtri",
-        password: "12345"
-    }
-
-    const verifyAccount = (values: any) => {
-        dispatch(ALogin(values.username));
-        navigate('/')
-    }
+    const verifyAccount = async (values: any) => {
+        await axios.post(
+            "http://localhost:5000/authorize?username=" +
+            values.username +
+            "&password=" +
+            values.password,
+            {}
+        ).then((res) => {
+            if (res.data.response === true) {
+                dispatch(ALogin(values.username));
+                navigate("/");
+            } else {
+                window.alert("Sai tên đăng nhập hoặc mật khẩu");
+            }
+        }).catch((e) => {
+            console.log('e', e)
+        })
+    };
 
     return (
-        <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
-            <Col span={6} >
+        <Row justify="center" align="middle" style={{ minHeight: "100vh" }}>
+            <Col span={6}>
                 <h1> BKPOS </h1>
                 <Form
                     name="normal_login"
@@ -37,7 +46,9 @@ const Login = () => {
                 >
                     <Form.Item
                         name="username"
-                        rules={[{ required: true, message: 'Hãy nhập tên đăng nhập của bạn!' }]}
+                        rules={[
+                            { required: true, message: "Hãy nhập tên đăng nhập của bạn!" },
+                        ]}
                     >
                         <Input
                             prefix={<UserOutlined className="site-form-item-icon" />}
@@ -46,7 +57,7 @@ const Login = () => {
                     </Form.Item>
                     <Form.Item
                         name="password"
-                        rules={[{ required: true, message: 'Hãy nhập mật khẩu của bạn!' }]}
+                        rules={[{ required: true, message: "Hãy nhập mật khẩu của bạn!" }]}
                     >
                         <Input
                             prefix={<LockOutlined className="site-form-item-icon" />}
@@ -65,7 +76,11 @@ const Login = () => {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" className="login-form-button">
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            className="login-form-button"
+                        >
                             Đăng nhập
                         </Button>
                         Hoặc <a href="/register">đăng ký ngay!</a>
