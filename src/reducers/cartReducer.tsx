@@ -11,6 +11,7 @@ export default function cartReducer(state = initialState, action: any) {
                 foodList: [...state.foodList, action.food]
             };
         }
+
         default:
             return state;
     }

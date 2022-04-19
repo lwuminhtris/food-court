@@ -1,16 +1,10 @@
 import * as types from "../constants/ActionTypes";
 
 const ACartAdding = (
-    username: string,
-    foodName: string,
-    foodNumber: number
+    foodName: string
 ) => ({
     type: types.ADD_TO_CART,
-    food: {
-        username: username,
-        foodname: foodName,
-        foodNumber: foodNumber,
-    }
+    food: foodName
 });
 
 export default ACartAdding;
