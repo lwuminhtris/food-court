@@ -24,3 +24,4 @@ yarn-error.log*
 
 # key
 /backend/key.json
+key.json
