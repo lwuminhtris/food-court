@@ -11,11 +11,18 @@ import {
     Typography,
     Grid,
     CardActions,
+    Dialog,
+    DialogTitle,
+    DialogContentText,
+    DialogContent,
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "./checkout.css";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import HistoryIcon from '@mui/icons-material/History';
+import { Link } from "react-router-dom";
 
 const foodPrice: Record<any, any> = {
     Burger: 30000,
@@ -101,6 +108,7 @@ const FoodExpense = (props: any) => {
     );
 };
 
+
 const CheckOut = () => {
     const foodList = useSelector<any, string[]>(
         (state) => state.cartReducer.foodList
@@ -158,6 +166,46 @@ const CheckOut = () => {
         })
     };
 
+    interface IOrderedHistory {
+        date: any,
+        pizza: any,
+        pasta: any,
+        paella: any,
+        burger: any,
+        totalPrice: any
+    }
+
+    const [viewHistory, setViewHistory] = useState(false)
+
+    const handleViewHistory = async (input: boolean) => {
+        await getOrdersHistory();
+        setViewHistory(input)
+    }
+
+    const [orderedHistory, setOrderedHistory] = useState<IOrderedHistory[]>([])
+
+    const getOrdersHistory = () => {
+        const url = "http://localhost:5000/orders?username=" + username
+        axios.get(url)
+            .then((res) => {
+                console.log(url)
+                const listOfOrders: IOrderedHistory[] = [];
+                for (const elem of res.data.orders) {
+                    listOfOrders.push({
+                        date: elem.date,
+                        pizza: elem.pizza,
+                        paella: elem.paella,
+                        burger: elem.burger,
+                        pasta: elem.pasta,
+                        totalPrice: elem.totalPrice
+                    })
+                }
+                setOrderedHistory(listOfOrders)
+                console.log(orderedHistory)
+            })
+            .catch((e) => console.log('error', e))
+    }
+
     return (
         <>
             <Grid
@@ -168,6 +216,48 @@ const CheckOut = () => {
                 justifyContent="center"
                 style={{ minHeight: "100vh" }}
             >
+                <Grid item xs={6} sm={3} lg={12}>
+                    <Box className="toolbar">
+                        <Link to="/">
+                            <Button variant="outlined">
+                                <KeyboardBackspaceIcon /> Quay lại trang chủ
+                            </Button>
+                        </Link>
+                        <Button variant="outlined" onClick={() => handleViewHistory(true)}>
+                            <HistoryIcon /> Xem lịch sử mua hàng
+                        </Button>
+                        <Dialog onClose={() => handleViewHistory(false)} open={viewHistory}>
+                            <DialogTitle>Lịch sử mua hàng</DialogTitle>
+                            {orderedHistory.map((d) => {
+                                return <DialogContent key={d.date}>
+                                    <DialogContentText>
+                                        Thời gian: {d.date.slice(11, 16) + " " + d.date.slice(0, 10)}
+                                    </DialogContentText>
+                                    <DialogContentText>
+                                        Pizza: {d.pizza + ' x 45000'}
+                                    </DialogContentText>
+                                    <DialogContentText>
+                                        Paella: {d.paella + ' x 60000'}
+                                    </DialogContentText>
+                                    <DialogContentText>
+                                        Pasta: {d.pasta + ' x 35000'}
+                                    </DialogContentText>
+                                    <DialogContentText>
+                                        Burger: {d.burger + ' x 30000'}
+                                    </DialogContentText>
+                                    <DialogContentText>
+                                        <b>Tổng tiền: {d.totalPrice + 'VNĐ'}</b>
+                                    </DialogContentText>
+                                    <DialogContentText>
+                                        ________________________
+                                    </DialogContentText>
+                                </DialogContent>
+                            })}
+
+                        </Dialog>
+                    </Box>
+
+                </Grid>
                 <Grid item xs={6} sm={3} lg={12}>
                     <Card
                         style={{

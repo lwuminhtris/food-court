@@ -2,8 +2,22 @@
     text-align: center;
 }
 
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: red;
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
 body {
-    /* margin: 0;
-    padding: 0; */
-    /* background-color: black; */
+    background-image: url('https://cdn.discordapp.com/attachments/835921395292700776/964924382935920700/271687.jpg');
 }

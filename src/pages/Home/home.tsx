@@ -17,6 +17,8 @@ import {
 } from "@mui/material";
 
 import storage from "redux-persist/lib/storage";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
 const Reservation = () => {
@@ -71,7 +73,7 @@ const Reservation = () => {
               </MenuItem>
             ))}
           </TextField>
-          <Button variant="outlined" style={{ marginLeft: 10, height: "4em" }}>
+          <Button variant="contained" style={{ marginLeft: 10, height: "4em" }} onClick={() => window.alert("Quý khách đã đặt bàn thành công!")}>
             Đặt Bàn
           </Button>
         </CardActions>
@@ -88,6 +90,7 @@ const Home = () => {
 
   const resetState = () => {
     storage.removeItem('persist:root')
+    setLoggedIn('')
   }
 
   useEffect(() => {
@@ -97,30 +100,33 @@ const Home = () => {
   let loginButton;
 
   if (isLoggedIn === '') {
-    loginButton = <Button variant="outlined" style={{ color: "black" }}>
+    loginButton = <Button variant="outlined" style={{ color: "white" }}>
       <Link to="/login" />
-      {" "}
-      Đăng Nhập{" "}
+      <Button variant="outlined">
+        Đăng nhập
+      </Button>
     </Button >
   } else {
     loginButton = <div className="logged-in-toolbar">
-      <a style={{ marginRight: 10 }} href="/checkout">
-        <Link to="/checkout">
-          Giỏ hàng
-        </Link>
-      </a>
-      <a style={{ marginRight: 10 }} href="/login" onClick={resetState}>
-        {/* <Link to="/login"> */}
-        Đăng xuất
-        {/* </Link> */}
-      </a>
+      <Link to="/checkout">
+        <Button variant="outlined" style={{ marginRight: 10 }}>
+          <ShoppingCartIcon /> Giỏ hàng
+        </Button>
+      </Link>
+
+      <Link to="/login">
+        <Button variant="outlined" onClick={() => resetState}>
+          <LogoutIcon /> Đăng xuất
+        </Button>
+      </Link>
+
     </div>
   }
 
   return (
     <>
       <Box className="toolbar">
-        <Typography>BKPOS</Typography>
+        <Typography fontFamily={'Roboto'} style={{ color: 'white' }}>BKPOS</Typography>
         {/* <Button variant="outlined" style={{ color: "black" }}>
           {" "}
           Đăng Nhập{" "}
@@ -131,8 +137,9 @@ const Home = () => {
       <Box className="reservation">
         <Reservation />
       </Box>
-      <Box style={{ textAlign: "center", marginTop: 20, marginBottom: 20 }}>
-        DANH SÁCH MÓN ĂN
+      <Box style={{ textAlign: 'center', marginTop: 20, }}>
+        {/* DANH SÁCH MÓN ĂN */}
+        <img src="https://cdn.discordapp.com/attachments/835921395292700776/977284840779051088/1.png" height={100} />
       </Box>
       <Box className="menu-item">
         <Box
@@ -145,7 +152,7 @@ const Home = () => {
             // paddingBottom: 5
           }}
         >
-          <FoodCard foodName="Burger" imgUrl={foodType.hamburger.img} />
+          <FoodCard foodName="Burger" imgUrl={foodType.hamburger.img} description={foodType.hamburger.description} />
         </Box>
         <Box
           sx={{
@@ -157,7 +164,7 @@ const Home = () => {
             // paddingBottom: 5
           }}
         >
-          <FoodCard foodName="Pizza" imgUrl={foodType.pizza.img} />
+          <FoodCard foodName="Pizza" imgUrl={foodType.pizza.img} description={foodType.pizza.description} />
         </Box>
         <Box
           sx={{
@@ -169,7 +176,7 @@ const Home = () => {
             // paddingBottom: 5
           }}
         >
-          <FoodCard foodName="Pasta" imgUrl={foodType.pasta.img} />
+          <FoodCard foodName="Pasta" imgUrl={foodType.pasta.img} description={foodType.pasta.description} />
         </Box>
         <Box
           sx={{
@@ -181,10 +188,10 @@ const Home = () => {
             // paddingBottom: 5
           }}
         >
-          <FoodCard foodName="Paella" imgUrl={foodType.paella.img} />
+          <FoodCard foodName="Paella" imgUrl={foodType.paella.img} description={foodType.paella.description} />
         </Box>
       </Box>
-      {/* <Box className="footer">(C) BKPOS 2022</Box> */}
+      {/* <Box className="footer">Copyright (C) Công ty Cổ phần Thực phẩm BKPOS 2022</Box> */}
     </>
   );
 };

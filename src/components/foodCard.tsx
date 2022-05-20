@@ -52,7 +52,7 @@ const FoodCard = (props: any) => {
                     maxWidth: "25em",
                     minWidth: "10em",
                     width: "80%",
-                    height: "20em",
+                    height: "25em",
                     // backgroundColor: "red",
                     display: "flex",
                     flexDirection: "column",
@@ -64,7 +64,7 @@ const FoodCard = (props: any) => {
                 </Typography>
                 <CardContent>
                     <Typography variant="body2">
-                        the{bull}bestest{bull}pizza{bull}in{bull}the{bull}world
+                        {props.description}
                     </Typography>
                 </CardContent>
                 <CardActions>

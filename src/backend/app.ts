@@ -12,7 +12,7 @@ app.get("/", (req: any, res: any) => {
   res.send("<b>API Authorization Denied</b>");
 });
 
-// /authorize?username=..&&password=..
+// => /authorize?username=..&&password=..
 app.post("/authorize", async (req: any, res: any) => {
   const account = await db
     .collection("users")
@@ -26,7 +26,7 @@ app.post("/authorize", async (req: any, res: any) => {
   }
 });
 
-// /register?username=..&&password=..
+// => /register?username=..&&password=..
 app.post("/register", async (req: any, res: any) => {
   const account = await db
     .collection("users")
@@ -43,7 +43,7 @@ app.post("/register", async (req: any, res: any) => {
   }
 });
 
-// /orders
+// => /orders
 app.post("/orders", async (req: any, res: any) => {
   const status = await db.collection("ordersListByUser").add({
     username: req.body.username,
@@ -58,6 +58,23 @@ app.post("/orders", async (req: any, res: any) => {
     res.send({ response: true });
   } else {
     res.send({ response: false });
+  }
+});
+
+// => /orders?username=...
+app.get("/orders", async (req: any, res: any) => {
+  const orders = await db
+    .collection("ordersListByUser")
+    .where("username", "==", req.query.username)
+    .get();
+  const ordersList: Record<any, any>[] = [];
+  orders.forEach((doc) => {
+    ordersList.push(doc.data());
+  });
+  if (!orders.empty) {
+    res.send({ orders: ordersList });
+  } else {
+    res.send({ orders: [] });
   }
 });
 
