@@ -12,6 +12,12 @@ export default function cartReducer(state = initialState, action: any) {
             };
         }
 
+        case types.RESET_CART: {
+            return {
+                foodList: []
+            }
+        }
+
         default:
             return state;
     }

@@ -1,23 +1,36 @@
 .receipt {
-    text-align: center;
+  text-align: center;
 }
 
 .toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    background-color: red;
-    top: 0;
-    left: 0;
-    position: absolute;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
 }
 
 body {
-    background-image: url('https://cdn.discordapp.com/attachments/835921395292700776/964924382935920700/271687.jpg');
+  background-image: 
+    linear-gradient(135deg,
+              hsl(0deg 79% 23%) 0%,
+              hsl(10deg 78% 28%) 19%,
+              hsl(18deg 81% 32%) 38%,
+              hsl(25deg 85% 36%) 58%,
+              hsl(31deg 92% 39%) 71%,
+              hsl(36deg 100% 41%) 77%,
+              hsl(40deg 100% 44%) 83%,
+              hsl(45deg 100% 47%) 88%,
+              hsl(50deg 100% 49%) 94%,
+              hsl(55deg 100% 50%) 100%
+    );
+  background-repeat: repeat;
+  background-size: contain;
 }

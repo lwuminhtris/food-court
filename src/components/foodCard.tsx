@@ -6,6 +6,7 @@ import {
     Typography,
     Box,
     Button,
+    CardMedia,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,9 +17,12 @@ const FoodCard = (props: any) => {
     const [isClicked, setIsClicked] = useState(false)
 
     const foodList: string[] = useSelector<any, string[]>((state) => state.cartReducer.foodList);
+    const user = useSelector<any, any>(
+        (state) => state.loginReducer.userList.username
+    );
 
     useEffect(() => {
-        if (foodList.includes(props.foodName) === false || foodList.length === 0) {
+        if (foodList.includes(props.foodName) === false || foodList.length === 0 || user === "") {
             setIsClicked(false)
         } else {
             setIsClicked(true)
@@ -30,39 +34,39 @@ const FoodCard = (props: any) => {
     const dispatch = useDispatch();
 
     const updateCart = () => {
-        if (foodList.includes(props.name) === false) {
-            dispatch(ACartAdding(props.foodName));
+        if (user === "") {
+            setIsClicked(false)
+            window.alert("Quý khách cần đăng nhập trước đã!");
+        } else {
+            if (foodList.includes(props.name) === false) {
+                dispatch(ACartAdding(props.foodName));
+            }
+            setIsClicked(true)
         }
-        setIsClicked(true)
     };
-
-    const bull = (
-        <Box
-            component="span"
-            sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-        >
-            •
-        </Box>
-    );
 
     return (
         <>
             <Card
+                variant="elevation"
                 style={{
                     maxWidth: "25em",
-                    minWidth: "10em",
-                    width: "80%",
-                    height: "25em",
-                    // backgroundColor: "red",
-                    display: "flex",
-                    flexDirection: "column",
+                }}
+                sx={{
+                    boxShadow: '5px 5px 5px rgba(30,30,30,0.5)',
                 }}
             >
-                <CardHeader title={props.foodName} style={{ textAlign: "center" }} />
-                <Typography variant="h1" style={{ textAlign: "center" }}>
-                    {props.imgUrl}
-                </Typography>
+                <CardMedia
+                    component="img"
+                    height="140"
+                    image={props.imgUrl}
+                    alt={props.foodName}
+
+                />
                 <CardContent>
+                    <Typography variant="h5" style={{ textAlign: "left" }}>
+                        {props.foodName}
+                    </Typography>
                     <Typography variant="body2">
                         {props.description}
                     </Typography>
@@ -70,7 +74,7 @@ const FoodCard = (props: any) => {
                 <CardActions>
                     <Button
                         variant="contained"
-                        size="small"
+                        size="large"
                         style={{ width: "100%" }}
                         onClick={updateCart}
                         disabled={isClicked}

@@ -46,13 +46,12 @@
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
-    height: 30em;
+    /* height: 30em; */
 }
 
 .footer {
     position: relative;
     text-align: center;
-    background-color: red;
     /* bottom: 0; */
     left: 0;
     width: 100%;

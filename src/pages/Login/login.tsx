@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ALogin from "../../actions/loginAction";
 import axios from "axios";
+import storage from "redux-persist/lib/storage";
 
 interface IAccount {
     username: string;
@@ -16,6 +17,9 @@ const Login = () => {
     const dispatch = useDispatch();
 
     const verifyAccount = async (values: any) => {
+
+        storage.removeItem('persist:root');
+
         await axios.post(
             "http://localhost:5000/authorize?username=" +
             values.username +
