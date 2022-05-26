@@ -17,14 +17,27 @@ const Register = () => {
                 "&password=" +
                 values.password,
                 {}
-            ).then((res) => {
+            ).then(async (res) => {
                 if (res.data.response === true) {
-                    window.alert("Đăng ký thành công!")
-                    navigate('/login');
+                    const url = "http://localhost:5000/informations";
+                    await axios.post(url, {
+                        username: values.username,
+                        name: '',
+                        phone: '',
+                        address: ''
+                    }).then((res) => {
+                        if (res.data.response === true) {
+                            window.alert("Đăng ký thành công!")
+                            navigate('/login');
+                        }
+                    })
+
                 } else {
                     window.alert("Tên đăng nhập đã tồn tại, hãy chọn tên khác!")
                 }
             })
+
+
         }
     };
 

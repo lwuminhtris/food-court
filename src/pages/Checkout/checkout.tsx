@@ -9,7 +9,6 @@ import {
     ListItem,
     ListItemText,
     Typography,
-    Grid,
     CardActions,
     Dialog,
     DialogTitle,
@@ -118,10 +117,26 @@ const CheckOut = () => {
         (state) => state.loginReducer.userList.username
     );
 
+    const [userInformation, setUserInformation] = useState<Record<any, any>>({
+        name: "",
+        phone: "",
+        address: "",
+    });
+
     useEffect(() => {
         if (username === "") {
             // eslint-disable-next-line no-restricted-globals
             history.back();
+        } else {
+            axios
+                .get("http://localhost:5000/informations?username=" + username)
+                .then((res) => {
+                    setUserInformation({
+                        name: res.data.name,
+                        phone: res.data.phone,
+                        address: res.data.address,
+                    });
+                });
         }
     }, [username]);
 
@@ -284,9 +299,9 @@ const CheckOut = () => {
                     flexDirection: "row",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: '100%',
+                    height: "100%",
                     alignContent: "center",
-                    minHeight: '100vh',
+                    minHeight: "100vh",
                 }}
             >
                 <Card
@@ -302,6 +317,45 @@ const CheckOut = () => {
                     <CardContent>
                         <List dense={true}>
                             {multiItemList}
+                            <Typography
+                                style={{
+                                    marginLeft: 15,
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    marginRight: 15,
+                                    marginTop: 15,
+                                }}
+                            >
+                                <b>TÊN KHÁCH HÀNG</b>
+                                <b>{userInformation.name}</b>
+                            </Typography>
+                            <Typography
+                                style={{
+                                    marginLeft: 15,
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    marginRight: 15,
+                                    marginTop: 15,
+                                }}
+                            >
+                                <b>SỐ ĐIỆN THOẠI</b>
+                                <b>{userInformation.phone}</b>
+                            </Typography>
+                            <Typography
+                                style={{
+                                    marginLeft: 15,
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    marginRight: 15,
+                                    marginTop: 15,
+                                }}
+                            >
+                                <b>ĐỊA CHỈ</b>
+                                <b>{userInformation.address}</b>
+                            </Typography>
                             <Typography
                                 style={{
                                     marginLeft: 15,

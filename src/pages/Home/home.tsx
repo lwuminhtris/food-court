@@ -3,7 +3,7 @@ import "./home.css";
 import FoodCard from "../../components/foodCard";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import foodType from "../../utils/foodCatergory";
 import {
   Box,
@@ -11,6 +11,10 @@ import {
   Card,
   CardActions,
   CardHeader,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   MenuItem,
   TextField,
   Typography,
@@ -21,20 +25,22 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ALogin from "../../actions/loginAction";
 import AResetCart from "../../actions/resetCartAction";
 import LoginIcon from "@mui/icons-material/Login";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import axios from "axios";
 
 const Reservation = () => {
   const places = [
     {
       value: "LTT",
-      label: "225 Lý Tự Trọng, Phường 11, TP.Thủ Đức, TP.Hồ Chí Minh",
+      label: "225 Lý Tự Trọng, P.11, Q.2, TP.HCM",
     },
     {
       value: "Q5",
-      label: "23 An Dương Vương, Phường 10, Quận 5, TP.Hồ Chí Minh",
+      label: "23 An Dương Vương, P.10, Q.5, TP.HCM",
     },
     {
       value: "HN",
-      label: "01 Cây Đa, Phường Bình Hưng, Quận Liên Chiểu, TP. Hà Nội",
+      label: "01 Cây Đa, P.10, Quận Liên Chiểu, TP.HN",
     },
   ];
 
@@ -97,21 +103,90 @@ const Home = () => {
   const dispatch = useDispatch();
 
   const resetState = () => {
-    // storage.removeItem("persist:root");
     dispatch(AResetCart());
     dispatch(ALogin(""));
     setLoggedIn("");
   };
 
-  const resetStateForLoggedIn = () => {
-    // storage.removeItem("persist:root");
-  }
+  const [userInformation, setUserInformation] = useState({
+    username: user,
+    name: "",
+    phone: "",
+    address: "",
+  });
 
   useEffect(() => {
     setLoggedIn(user);
   }, [user]);
 
   let loginButton;
+
+  const [isOpenInformation, setOpenInformation] = useState(false);
+
+  const handleViewInformation = (what: boolean) => {
+    setOpenInformation(what);
+    if (what === true) {
+      const url = "http://localhost:5000/informations?username=" + user;
+      axios
+        .get(url)
+        .then((res) => {
+          setUserInformation(res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  };
+
+  const handleName = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setUserInformation({
+      username: userInformation.username,
+      name: e.target.value,
+      phone: userInformation.phone,
+      address: userInformation.address,
+    });
+  };
+
+  const handlePhone = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setUserInformation({
+      username: userInformation.username,
+      name: userInformation.name,
+      phone: e.target.value,
+      address: userInformation.address,
+    });
+  };
+
+  const handleAddress = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setUserInformation({
+      username: userInformation.username,
+      name: userInformation.name,
+      phone: userInformation.phone,
+      address: e.target.value,
+    });
+  };
+
+  const updateInformation = async () => {
+    await axios
+      .post("http://localhost:5000/informations", {
+        username: user,
+        name: userInformation.name,
+        phone: userInformation.phone,
+        address: userInformation.address,
+      })
+      .then((res) => {
+        if (res.data.response === true) {
+          window.alert("Cập nhật thông tin thành công!");
+        } else {
+          window.alert("Cập nhật thông tin thất bại!");
+        }
+      });
+  };
 
   if (user === "") {
     loginButton = (
@@ -171,7 +246,71 @@ const Home = () => {
           </Button>
         </Link>
 
-        {/* <Link to="/"> */}
+        <Button
+          variant="outlined"
+          style={{ marginRight: 10 }}
+          onClick={() => handleViewInformation(true)}
+          sx={{
+            color: "white",
+            borderColor: "white",
+            "&:hover": {
+              backdropFilter: "blur(100px)",
+              borderColor: "white",
+            },
+          }}
+        >
+          <AccountCircleIcon /> Cá nhân
+        </Button>
+        <Dialog
+          open={isOpenInformation}
+          onClose={() => handleViewInformation(false)}
+          fullWidth
+        >
+          <DialogTitle>Thông tin cá nhân</DialogTitle>
+          <DialogContent
+            dividers
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <TextField
+              margin="dense"
+              id="name"
+              label="Username"
+              value={userInformation.username}
+              disabled
+            />
+            <TextField
+              margin="dense"
+              id="name"
+              label="Họ và tên"
+              value={userInformation.name}
+              onChange={(e) => handleName(e)}
+            />
+            <TextField
+              margin="dense"
+              id="phone"
+              label="Số điện thoại"
+              value={userInformation.phone}
+              onChange={(e) => handlePhone(e)}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="address"
+              label="Địa chỉ"
+              value={userInformation.address}
+              onChange={(e) => handleAddress(e)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" onClick={updateInformation}>
+              Cập nhật thông tin
+            </Button>
+          </DialogActions>
+        </Dialog>
+
         <Button
           variant="outlined"
           onClick={resetState}
@@ -184,13 +323,8 @@ const Home = () => {
             },
           }}
         >
-          <LogoutIcon /> Đăng xuất
+          <LogoutIcon />
         </Button>
-        {/* </Link> */}
-        {/* 
-        <Button onClick={resetStateForLoggedIn}>
-          RESET
-        </Button> */}
       </div>
     );
   }
@@ -280,7 +414,6 @@ const Home = () => {
           />
         </Box>
       </Box>
-      {/* <Box className="footer">Copyright (C) Công ty Cổ phần Thực phẩm BKPOS 2022</Box> */}
     </>
   );
 };
