@@ -98,14 +98,11 @@ const Home = () => {
     (state) => state.loginReducer.userList.username
   );
 
-  const [isLoggedIn, setLoggedIn] = useState("");
-
   const dispatch = useDispatch();
 
   const resetState = () => {
     dispatch(AResetCart());
     dispatch(ALogin(""));
-    setLoggedIn("");
   };
 
   const [userInformation, setUserInformation] = useState({
@@ -115,9 +112,9 @@ const Home = () => {
     address: "",
   });
 
-  useEffect(() => {
-    setLoggedIn(user);
-  }, [user]);
+  // useEffect(() => {
+  //   setLoggedIn(user);
+  // }, [user]);
 
   let loginButton;
 
@@ -330,7 +327,7 @@ const Home = () => {
   }
 
   return (
-    <>
+    <div>
       <Box className="toolbar">
         <Typography fontFamily={"Roboto"} style={{ color: "white" }}>
           BKPOS
@@ -414,7 +411,7 @@ const Home = () => {
           />
         </Box>
       </Box>
-    </>
+    </div>
   );
 };
 

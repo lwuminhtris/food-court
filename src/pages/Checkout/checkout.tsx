@@ -22,7 +22,6 @@ import "./checkout.css";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import HistoryIcon from "@mui/icons-material/History";
 import { Link } from "react-router-dom";
-import storage from "redux-persist/lib/storage";
 
 const foodPrice: Record<any, any> = {
     Burger: 30000,
@@ -268,7 +267,7 @@ const CheckOut = () => {
                     <DialogTitle>Lịch sử mua hàng</DialogTitle>
                     {orderedHistory.map((d) => {
                         return (
-                            <DialogContent key={d.date}>
+                            <DialogContent key={d.date} dividers>
                                 <DialogContentText>
                                     Thời gian: {d.date.slice(11, 16) + " " + d.date.slice(0, 10)}
                                 </DialogContentText>
@@ -287,7 +286,6 @@ const CheckOut = () => {
                                 <DialogContentText>
                                     <b>Tổng tiền: {d.totalPrice + "VNĐ"}</b>
                                 </DialogContentText>
-                                <DialogContentText>________________________</DialogContentText>
                             </DialogContent>
                         );
                     })}
@@ -327,7 +325,7 @@ const CheckOut = () => {
                                     marginTop: 15,
                                 }}
                             >
-                                <b>TÊN KHÁCH HÀNG</b>
+                                <b>TÊN KHÁCH HÀNG:</b>
                                 <b>{userInformation.name}</b>
                             </Typography>
                             <Typography
@@ -340,7 +338,7 @@ const CheckOut = () => {
                                     marginTop: 15,
                                 }}
                             >
-                                <b>SỐ ĐIỆN THOẠI</b>
+                                <b>SỐ ĐIỆN THOẠI:</b>
                                 <b>{userInformation.phone}</b>
                             </Typography>
                             <Typography
@@ -353,7 +351,7 @@ const CheckOut = () => {
                                     marginTop: 15,
                                 }}
                             >
-                                <b>ĐỊA CHỈ</b>
+                                <b>ĐỊA CHỈ:</b>
                                 <b>{userInformation.address}</b>
                             </Typography>
                             <Typography
