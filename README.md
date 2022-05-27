@@ -27,3 +27,5 @@ The server will listen on `localhost:5000` and the app will run on `localhost:30
 - ReactJS with Material UI
 - Firebase with Firecloud
 
+## Contact
+- For any question please contact tri.luuminh@hcmut.edu.vn
